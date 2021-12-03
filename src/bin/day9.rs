@@ -1,4 +1,5 @@
-use advent_of_code_2021::read_file_into_line_array;
+use advent_of_code_2020::read_file_into_line_array;
+
 
 fn main() {
     let values: Vec<u64> = read_file_into_line_array("input/day9.txt")
