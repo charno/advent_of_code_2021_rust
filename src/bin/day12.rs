@@ -60,7 +60,7 @@ impl Command
                 Command::Turn(val, _) => {
 
                     let mut new_waypoint = waypoint;
-                    for i in 0..*val
+                    for _ in 0..*val
                     {
                         new_waypoint = (new_waypoint.1, -new_waypoint.0)
                     }
