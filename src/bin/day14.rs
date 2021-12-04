@@ -1,7 +1,6 @@
 use std::{collections::HashMap, str::FromStr};
 
-use advent_of_code_2020::read_file_into_line_array;
-use bitmaps::Bitmap;
+use advent_of_code_2020::{print_result_timed_execute, read_str_into_line_array, print_timed_execute};
 use itertools::Itertools;
 
 #[derive(Debug)]
@@ -50,7 +49,7 @@ impl Command
             Command::Mem(address, values) => {
                 let address = address | mask.ones;
 
-                let num_of_permutations = 2^mask.floating.count_ones();
+                let num_of_permutations = 2u64.pow(mask.floating.count_ones());
 
                 if num_of_permutations > 1
                 {
@@ -149,59 +148,62 @@ fn task2(commands: &Vec<Command>) -> i64
 }
 
 
-fn solve(input: &Vec<String>) -> (i64,i64)
+
+
+
+static DATA: &str = include_str!("../../input/day14.txt");
+
+fn prepare_data (data: &str) -> Vec<Command>
 {
-    let commands = input.iter().map(|s| Command::from_str(s).unwrap()).collect_vec();
-    (task1(&commands), task2(&commands))
+    read_str_into_line_array(data).iter().map(|s| Command::from_str(s).unwrap()).collect_vec()
 }
 
+// Normal setup below
+
 fn main() {
-    let (task1result, task2result) = solve(&read_file_into_line_array("input/day14.txt"));
-    println!("Day 14 - Task 1: {:?}, Task 2: {:?}", task1result, task2result);
+    println!("Day 14");
+    let commands = print_timed_execute(|| prepare_data(DATA), "Data prep") ;
+    print_result_timed_execute(||task1(&commands), "Task1");
+    print_result_timed_execute(||task2(&commands), "Task2");
 }
 
 #[cfg(test)]
 mod tests
 {
-    use advent_of_code_2020::read_string_into_line_array;
-    use itertools::Itertools;
-    use super::Command;
-    use std::str::FromStr;
-
-    #[test]
-    fn task1()
-    {
-        assert_eq!(super::task1(&get_test_data()), 165)
-    }
-
-    #[test]
-    fn task2()
-    {
-        assert_eq!(super::task2(&get_test_data2()), 208)
-
-    }
-
     static TESTDATA: &str =
-    "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
+"mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
 mem[8] = 11
 mem[7] = 101
 mem[8] = 0";
 
-static TESTDATA2: &str =
+    static TESTDATA2: &str =
 "mask = 000000000000000000000000000000X1001X
 mem[42] = 100
 mask = 00000000000000000000000000000000X0XX
 mem[26] = 1";
 
-    fn get_test_data() -> Vec<Command> {
-
-        let lines = read_string_into_line_array(TESTDATA.to_string());
-        lines.into_iter().map(|s| Command::from_str(s.as_str()).unwrap()).collect_vec()
+    #[test]
+    fn task1_testdata()
+    {
+        assert_eq!(super::task1(&super::prepare_data(TESTDATA)), 165)
     }
 
-    fn get_test_data2() -> Vec<Command> {
-
-        let lines = read_string_into_line_array(TESTDATA2.to_string());
-        lines.into_iter().map(|s| Command::from_str(s.as_str()).unwrap()).collect_vec()
+    #[test]
+    fn task2_testdata()
+    {
+        assert_eq!(super::task2(&super::prepare_data(TESTDATA2)), 208)
     }
+
+    #[test]
+    fn task1()
+    {
+        assert_eq!(super::task1(&super::prepare_data(super::DATA)), 10885823581193)
+    }
+
+    #[test]
+    fn task2()
+    {
+        assert_eq!(super::task2(&super::prepare_data(super::DATA)), 3816594901962)
+    }
+
 }
