@@ -3,6 +3,10 @@ use std::{str::FromStr, collections::HashMap, ops::{Add, Sub}};
 use advent_of_code_2021::{print_result_timed_execute, print_timed_execute};
 use itertools::Itertools;
 
+#[macro_use]
+extern crate bmp;
+use bmp::{Image, Pixel};
+
 type DataType = Line;
 
 #[derive(Debug,PartialEq,Clone,Copy,Eq,Hash)]
@@ -133,6 +137,16 @@ fn task1(input: &Vec<DataType>) -> u64
             }
         }
     }
+
+    let mut image = bmp::Image::new(1000, 1000);
+
+    for (point, value) in &map
+    {
+        image.set_pixel(point.x as u32, point.y as u32, px!(value*40, value*40, value*40) );
+    }
+
+    let _ = image.save("day5task1.bmp");
+
     map.iter().filter(|(_ , &count)| count >= 2).count() as u64
 }
 
@@ -148,6 +162,16 @@ fn task2(input: &Vec<DataType>) -> u64
             *map.entry(point).or_insert(0) += 1;
         }
     }
+
+    let mut image = bmp::Image::new(1000, 1000);
+
+    for (point, value) in &map
+    {
+        image.set_pixel(point.x as u32, point.y as u32, px!(value*40, value*40, value*40) );
+    }
+
+    let _ = image.save("day5task2.bmp");
+
     map.iter().filter(|(_ , &count)| count >= 2).count() as u64
 }
 
