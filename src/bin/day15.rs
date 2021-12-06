@@ -14,7 +14,7 @@ fn game_after_turns(input: &Vec<u64>, turns: u64) -> u64 {
     for &number in input
     {
         lastnumber = number as usize;
-        field[turn] = number as usize;
+        field[number as usize] = turn;
         turn += 1;
     }
     while turn <= turns as usize
@@ -22,7 +22,7 @@ fn game_after_turns(input: &Vec<u64>, turns: u64) -> u64 {
         let last_lastnumber = lastnumber;
         if field[lastnumber] != 0
         {
-            lastnumber = field[lastnumber] - 1;
+            lastnumber = turn - field[lastnumber] - 1;
         }
         else {
             lastnumber = 0;
