@@ -12,9 +12,38 @@ fn task1(earliest_departure: i32, buslines: &Vec<i32>) -> u64
     (busline * (departuretime-earliest_departure)) as u64
 }
 
-fn task2(earliest_departure: i32, buslines: &Vec<i32>) -> u64
+fn task2(buslines: &str) -> u64
 {
-0
+    let mut diff = 0;
+    let mut busvec = Vec::new();
+    for busline in buslines.split(",")
+    {
+        match busline {
+            "x" => (),
+            val => busvec.push((val.parse::<u64>().unwrap(), diff as u64))
+        }
+        diff += 1;
+    }
+    busvec.sort();
+    busvec.reverse();
+
+    // Solution from https://github.com/Lakret/aoc2020/blob/master/src/d13.rs
+    let mut current_minute = 1;
+    let mut period = 1;
+    for (line, offset) in &busvec
+    {
+        loop
+        {
+            if (current_minute + offset) % line == 0
+            {
+                period *= line;
+                break;
+            }
+
+            current_minute += period;
+        }
+    }
+    current_minute
 }
 
 
@@ -25,7 +54,7 @@ fn solve(input: &Vec<String>) -> (u64,u64)
     let busdefinitions = iter.next().unwrap();
     let buslines = busdefinitions.split(',').filter(|x| x != &"x").map(|s| s.parse().unwrap()).collect_vec();
 
-    (task1(earliest_departure, &buslines), task2(earliest_departure, &buslines))
+    (task1(earliest_departure, &buslines), task2(busdefinitions))
 }
 
 fn main() {
@@ -50,7 +79,7 @@ mod tests
     fn task2()
     {
         let (earliest_departure, buslines) = get_test_data();
-        assert_eq!(super::task2(earliest_departure, &buslines), 286)
+        assert_eq!(super::task2("7,13,x,x,59,x,31,19"), 1068781)
     }
 
     fn get_test_data() -> (i32, Vec<i32>) {
