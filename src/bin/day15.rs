@@ -1,5 +1,3 @@
-use std::{collections::HashMap};
-
 use advent_of_code_2020::{print_result_timed_execute, print_timed_execute};
 use itertools::Itertools;
 

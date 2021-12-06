@@ -78,7 +78,6 @@ mod tests
     #[test]
     fn task2()
     {
-        let (earliest_departure, buslines) = get_test_data();
         assert_eq!(super::task2("7,13,x,x,59,x,31,19"), 1068781)
     }
 
