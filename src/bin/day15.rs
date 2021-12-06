@@ -8,30 +8,31 @@ fn task1(input: &Vec<u64>) -> u64
     game_after_turns(input, 2020)
 }
 
+
 fn game_after_turns(input: &Vec<u64>, turns: u64) -> u64 {
-    let mut number_said_at_turn : HashMap<u64,u64> = HashMap::new();
+    let mut field = vec![0usize;turns as usize];
     let mut turn = 1;
     let mut lastnumber = 0;
     for &number in input
     {
-        lastnumber = number;
-        number_said_at_turn.insert(number, turn);
+        lastnumber = number as usize;
+        field[turn] = number as usize;
         turn += 1;
     }
-    while turn <= turns
+    while turn <= turns as usize
     {
         let last_lastnumber = lastnumber;
-        if number_said_at_turn.contains_key(&lastnumber)
+        if field[lastnumber] != 0
         {
-            lastnumber = turn - number_said_at_turn[&lastnumber] - 1;
+            lastnumber = field[lastnumber] - 1;
         }
         else {
             lastnumber = 0;
         }
-        number_said_at_turn.insert(last_lastnumber, turn-1, );
+        field[last_lastnumber] = turn-1;
         turn += 1;
     }
-    lastnumber
+    lastnumber as u64
 }
 
 fn task2(input: &Vec<u64>) -> u64
