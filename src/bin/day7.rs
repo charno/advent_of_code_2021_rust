@@ -1,16 +1,32 @@
 use advent_of_code_2021::{print_result_timed_execute, print_timed_execute};
+use itertools::Itertools;
 
-type DataType = Vec<u16>;
+type DataType = Vec<i64>;
 
 fn task1(input: &DataType) -> u64
 {
-    0
+    return (0..2000).map(
+        |point| (
+            input.iter().map(|val| (val-point).abs()).sum::<i64>(), point)
+        ).min_by_key(
+            |(distance, _)| *distance
+        ).unwrap().0 as u64;
 }
 
 
 fn task2(input: &DataType) -> u64
 {
-    0
+    return (0..2000).map(
+        |point| (
+            input.iter().map(
+                |val| {
+                    let dist = (val-point).abs();
+                    (dist * (1+dist)) / 2
+                }
+            ).sum::<i64>(), point)
+        ).min_by_key(
+            |(distance, _)| *distance
+        ).unwrap().0 as u64;
 }
 
 static DATA: &str = include_str!("../../input/day7.txt");
@@ -44,19 +60,19 @@ mod tests
     #[test]
     fn task2_testdata()
     {
-        assert_eq!(super::task2(&super::prepare_data(TESTDATA)), 26984457539);
+        assert_eq!(super::task2(&super::prepare_data(TESTDATA)), 168);
     }
 
     #[test]
     fn task1()
     {
-        assert_eq!(super::task1(&super::prepare_data(super::DATA)), 373378)
+        assert_eq!(super::task1(&super::prepare_data(super::DATA)), 359648)
     }
 
     #[test]
     fn task2()
     {
-        assert_eq!(super::task2(&super::prepare_data(super::DATA)), 1682576647495)
+        assert_eq!(super::task2(&super::prepare_data(super::DATA)), 100727924)
     }
 
 }
