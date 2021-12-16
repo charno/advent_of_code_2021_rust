@@ -121,13 +121,13 @@ CN -> C";
     #[test]
     fn task1()
     {
-        assert_eq!(super::task1(&super::prepare_data(super::DATA)), 4773)
+        assert_eq!(super::task1(&super::prepare_data(super::DATA)), 2768)
     }
 
     #[test]
     fn task2()
     {
-        assert_eq!(super::task2(&super::prepare_data(super::DATA)), 116985)
+        assert_eq!(super::task2(&super::prepare_data(super::DATA)), 2914365137499)
     }
 
 }
